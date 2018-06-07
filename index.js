@@ -11,7 +11,7 @@ const opts = {
 };
 
 function run (query) {
-  p(request)(`http://www.irasutoya.com/search?q=${encodeURIComponent(query)}`).then((res) => {
+  return p(request)(`http://www.irasutoya.com/search?q=${encodeURIComponent(query)}`).then((res) => {
     const $ = cheerio.load(res.body, opts);
     return $('.boxim > a').map((i, e) => $(e).attr('href'));
   })
@@ -25,12 +25,17 @@ function run (query) {
   })
   .then((res) => {
     const $ = cheerio.load(res.body, opts);
-    const imageUrl = $('.entry .separator a').attr('href');
+    let imageUrl = $('.entry .separator a').attr('href');
+    if (imageUrl.startsWith("//")) {
+      imageUrl = `https:${imageUrl}`;
+    }
 
     console.log(imageUrl);
+    return imageUrl;
   })
   .catch((e) => {
     console.log(e);
+    throw e;
   });
 }
 
