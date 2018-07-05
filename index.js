@@ -11,7 +11,7 @@ const opts = {
 };
 
 function run (query) {
-  return p(request)(`http://www.irasutoya.com/search?q=${encodeURIComponent(query)}`).then((res) => {
+  return p(request)(`https://www.irasutoya.com/search?q=${encodeURIComponent(query)}`).then((res) => {
     const $ = cheerio.load(res.body, opts);
     return $('.boxim > a').map((i, e) => $(e).attr('href'));
   })
